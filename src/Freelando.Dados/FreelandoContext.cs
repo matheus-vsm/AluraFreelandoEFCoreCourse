@@ -31,5 +31,18 @@ namespace Freelando.Dados
                 optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnectionStrings:DefaultConnection"));
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Especialidade>(entity =>
+            {
+                entity.ToTable("TB_Especialidades");
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID_Especialidade")
+                    .ValueGeneratedNever();
+                entity.Property(e => e.Descricao)
+                    .HasColumnName("DS_Especialidade");
+            });
+        }
     }
 }
