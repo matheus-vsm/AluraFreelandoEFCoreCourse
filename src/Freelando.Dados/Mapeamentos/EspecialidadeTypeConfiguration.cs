@@ -15,8 +15,7 @@ namespace Freelando.Dados.Mapeamentos
         {
             entity.ToTable("TB_Especialidades");
             entity.Property(e => e.Id)
-                .HasColumnName("ID_Especialidade")
-                .ValueGeneratedNever();
+                .HasColumnName("ID_Especialidade");
             entity.Property(e => e.Descricao)
                 .HasColumnName("DS_Especialidade");
         }
