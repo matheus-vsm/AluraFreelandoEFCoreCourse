@@ -34,15 +34,7 @@ namespace Freelando.Dados
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Especialidade>(entity =>
-            {
-                entity.ToTable("TB_Especialidades");
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID_Especialidade")
-                    .ValueGeneratedNever();
-                entity.Property(e => e.Descricao)
-                    .HasColumnName("DS_Especialidade");
-            });
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FreelandoContext).Assembly);
         }
     }
 }
