@@ -1,5 +1,3 @@
-﻿using Freelando.Modelo;
+﻿namespace Freelando.Api.Responses;
 
-namespace Freelando.Api.Responses;
-
-public record ServicoResponse(Guid Id, string? Titulo, string? Descricao, StatusServico? Status);
+public record ServicoResponse(Guid Id, string? Titulo, string? Descricao, string? Status);

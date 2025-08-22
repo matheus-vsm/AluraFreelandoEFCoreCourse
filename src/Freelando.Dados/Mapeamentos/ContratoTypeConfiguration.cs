@@ -1,0 +1,27 @@
+﻿using Freelando.Modelo;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Freelando.Dados.Mapeamentos
+{
+    internal class ContratoTypeConfiguration
+    {
+        public void Configure(EntityTypeBuilder<Contrato> entity)
+        {
+            entity.ToTable("TB_Contratos");
+            entity.Property(e => e.Id).HasColumnName("Id_Contrato");
+            entity.OwnsOne(e => e.Vigencia, vigencia =>
+            {
+                vigencia.Property(v => v.DataInicio).HasColumnName("Data_Inicio");
+                vigencia.Property(v => v.DataEncerramento).HasColumnName("Data_Encerramento");
+            });
+            // Configuração de "owned type": Vigencia é um objeto de valor do Contrato, suas propriedades (Data_Inicio, Data_Encerramento) ficam na mesma tabela TB_Contratos, e não em uma tabela separada.
+            // No banco de dados, você não quer uma tabela separada para Vigencia, mas sim que suas colunas (Inicio, Fim) fiquem na mesma tabela que Contrato.
+        }
+    }
+}

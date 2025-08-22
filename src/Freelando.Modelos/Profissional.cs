@@ -13,4 +13,12 @@ public class Profissional
     public string? Email { get; set; }
     public string? Telefone { get; set; }
 
+    public Profissional(Guid id, string? nome, string? cpf, string? email, string? telefone)
+    {
+        Id = id;
+        Nome = nome;
+        Cpf = cpf;
+        Email = email;
+        Telefone = telefone;
+    }
 }
