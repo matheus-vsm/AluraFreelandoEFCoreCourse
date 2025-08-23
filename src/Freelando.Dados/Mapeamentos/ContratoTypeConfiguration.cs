@@ -14,7 +14,7 @@ namespace Freelando.Dados.Mapeamentos
         public void Configure(EntityTypeBuilder<Contrato> entity)
         {
             entity.ToTable("TB_Contratos");
-            entity.Property(e => e.Id).HasColumnName("Id_Contrato");
+            entity.Property(e => e.Id).HasColumnName("ID_Contrato");
             entity.OwnsOne(e => e.Vigencia, vigencia =>
             {
                 vigencia.Property(v => v.DataInicio).HasColumnName("Data_Inicio");
