@@ -21,7 +21,9 @@ namespace Freelando.Dados.Mapeamentos
                 .HasColumnType("nvarchar(200)")
                 .HasColumnName("DS_Projeto");
             entity.Property(e => e.Status)
-                .HasConversion(fromObj => fromObj.ToString(), fromDb => (StatusProjeto)Enum.Parse(typeof (StatusProjeto), fromDb));
+                .HasConversion(
+                    fromObj => fromObj.ToString(), 
+                    fromDb => (StatusProjeto)Enum.Parse(typeof (StatusProjeto), fromDb));
             //fromObj => fromObj.ToString() - Quando o EF Core for salvar no banco, ele vai pegar o enum StatusProjeto e converter para string.
             //fromDb => (StatusProjeto)Enum.Parse(typeof(StatusProjeto), fromDb) - Quando o EF Core for ler do banco, ele vai pegar a string e converter para o enum StatusProjeto.
         }
