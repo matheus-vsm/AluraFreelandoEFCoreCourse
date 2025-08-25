@@ -24,6 +24,10 @@ namespace Freelando.Dados.Mapeamentos
                 .HasConversion(
                     fromObj => fromObj.ToString(), 
                     fromDb => (StatusProjeto)Enum.Parse(typeof (StatusProjeto), fromDb));
+            entity
+                .HasOne(e => e.Cliente)
+                .WithMany(c => c.Projetos)
+                .HasForeignKey("ID_Cliente");
             //fromObj => fromObj.ToString() - Quando o EF Core for salvar no banco, ele vai pegar o enum StatusProjeto e converter para string.
             //fromDb => (StatusProjeto)Enum.Parse(typeof(StatusProjeto), fromDb) - Quando o EF Core for ler do banco, ele vai pegar a string e converter para o enum StatusProjeto.
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Freelando.Dados.Mapeamentos
 {
-    internal class ContratoTypeConfiguration
+    internal class ContratoTypeConfiguration : IEntityTypeConfiguration<Contrato>
     {
         public void Configure(EntityTypeBuilder<Contrato> entity)
         {

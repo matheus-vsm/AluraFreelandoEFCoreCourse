@@ -13,6 +13,7 @@ public class Contrato
     public double Valor { get; set; }
     public Vigencia? Vigencia { get; set; }
 
+    private Contrato() { }
     public Contrato(Guid id, double valor, Vigencia? vigencia)
     {
         Id = id;
