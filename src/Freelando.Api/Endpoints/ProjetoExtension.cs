@@ -9,7 +9,7 @@ public static class ProjetoExtension
     public static void AddEndPointProjeto(this WebApplication app)
     {
         app.MapGet("/projetos", async ([FromServices] ProjetoConverter converter, [FromServices] FreelandoContext contexto) => {
-            var projetos = converter.EntityListToResponseList(contexto.Projetos.ToList());
+            var projetos = converter.EntityListToResponseList(contexto.Projetos.Include(p => p.Cliente).ToList());
             return Results.Ok(await Task.FromResult(projetos));
         }).WithTags("Projeto").WithOpenApi();
     }
