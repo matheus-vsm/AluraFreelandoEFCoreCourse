@@ -1,3 +1,5 @@
-﻿namespace Freelando.Api.Responses;
+﻿using Freelando.Modelos;
 
-public record ContratoResponse(Guid Id, double? Valor);
+namespace Freelando.Api.Responses;
+
+public record ContratoResponse(Guid Id, double? Valor, Vigencia? Vigencia, Guid ServicoId);

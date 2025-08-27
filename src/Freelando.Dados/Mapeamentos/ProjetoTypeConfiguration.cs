@@ -43,6 +43,23 @@ namespace Freelando.Dados.Mapeamentos
                         .WithMany(e => e.ProjetosEspecialidade)
                         .HasForeignKey(e => e.ProjetoId)
                     );
+            //configuração alternativa para muitos para muitos sem a entidade de junção
+            //entity
+            //    .HasMany(p => p.Especialidades)
+            //    .WithMany(e => e.Projetos)
+            //    .UsingEntity<Dictionary<string, object>>(
+            //        "TB_Especialidade_Projeto", // Nome da tabela de junção
+            //        j => j
+            //            .HasOne<Especialidade>()
+            //            .WithMany()
+            //            .HasForeignKey("Id_Especialidade")
+            //            .HasConstraintName("FK_Especialidade_Projeto_Especialidade"),
+            //        j => j
+            //            .HasOne<Projeto>()
+            //            .WithMany()
+            //            .HasForeignKey("Id_Projeto")
+            //            .HasConstraintName("FK_Especialidade_Projeto_Projeto")
+            //    );
             //fromObj => fromObj.ToString() - Quando o EF Core for salvar no banco, ele vai pegar o enum StatusProjeto e converter para string.
             //fromDb => (StatusProjeto)Enum.Parse(typeof(StatusProjeto), fromDb) - Quando o EF Core for ler do banco, ele vai pegar a string e converter para o enum StatusProjeto.
         }

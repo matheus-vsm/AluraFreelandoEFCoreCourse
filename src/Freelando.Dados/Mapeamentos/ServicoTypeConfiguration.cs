@@ -21,6 +21,9 @@ namespace Freelando.Dados.Mapeamentos
                 .HasColumnType("nvarchar(200)")
                 .HasColumnName("DS_Servico");
             entity.Property(e => e.Status).HasConversion(new EnumToStringConverter<StatusServico>());
+            entity
+                .HasOne(e => e.Contrato)
+                .WithOne(c => c.Servico);
         }
     }
 }

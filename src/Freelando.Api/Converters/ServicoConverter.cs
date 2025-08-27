@@ -20,10 +20,10 @@ public class ServicoConverter
     {
         if (servicoRequest == null)
         {
-            return new Servico(Guid.Empty, null, null, StatusServico.Disponivel);
+            return new Servico(Guid.Empty, null, null, StatusServico.Disponivel, null);
         }
 
-        return new Servico(servicoRequest.Id, servicoRequest.Titulo, servicoRequest.Descricao, servicoRequest.Status);
+        return new Servico(servicoRequest.Id, servicoRequest.Titulo, servicoRequest.Descricao, servicoRequest.Status, null);
     }
 
     public ICollection<ServicoResponse> EntityListToResponseList(IEnumerable<Servico> servicos)
