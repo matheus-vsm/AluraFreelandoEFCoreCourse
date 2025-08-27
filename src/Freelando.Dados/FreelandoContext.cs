@@ -1,4 +1,5 @@
 ﻿using Freelando.Modelo;
+using Freelando.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -18,11 +19,10 @@ namespace Freelando.Dados
         public DbSet<Profissional> Profissionais { get; set; }
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<Servico> Servicos { get; set; }
+        public DbSet<ProjetoEspecialidade> ProjetosEspecialidades { get; set; }
 
         private readonly IConfiguration _configuration;
-        public FreelandoContext(DbContextOptions<FreelandoContext> options) : base(options)
-        {
-        }
+        public FreelandoContext(DbContextOptions<FreelandoContext> options) : base(options) { }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

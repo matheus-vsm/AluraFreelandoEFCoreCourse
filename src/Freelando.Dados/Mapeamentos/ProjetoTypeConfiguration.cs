@@ -1,4 +1,5 @@
 ﻿using Freelando.Modelo;
+using Freelando.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -22,12 +23,26 @@ namespace Freelando.Dados.Mapeamentos
                 .HasColumnName("DS_Projeto");
             entity.Property(e => e.Status)
                 .HasConversion(
-                    fromObj => fromObj.ToString(), 
-                    fromDb => (StatusProjeto)Enum.Parse(typeof (StatusProjeto), fromDb));
+                    fromObj => fromObj.ToString(),
+                    fromDb => (StatusProjeto)Enum.Parse(typeof(StatusProjeto), fromDb));
             entity
                 .HasOne(e => e.Cliente)
                 .WithMany(c => c.Projetos)
                 .HasForeignKey("ID_Cliente");
+
+            entity
+                .HasMany(e => e.Especialidades)
+                .WithMany(e => e.Projetos)
+                .UsingEntity<ProjetoEspecialidade>(
+                    espe => espe
+                        .HasOne<Especialidade>(e => e.Especialidade)
+                        .WithMany(e => e.ProjetosEspecialidade)
+                        .HasForeignKey(e => e.EspecialidadeId),
+                    proj => proj
+                        .HasOne<Projeto>(e => e.Projeto)
+                        .WithMany(e => e.ProjetosEspecialidade)
+                        .HasForeignKey(e => e.ProjetoId)
+                    );
             //fromObj => fromObj.ToString() - Quando o EF Core for salvar no banco, ele vai pegar o enum StatusProjeto e converter para string.
             //fromDb => (StatusProjeto)Enum.Parse(typeof(StatusProjeto), fromDb) - Quando o EF Core for ler do banco, ele vai pegar a string e converter para o enum StatusProjeto.
         }
