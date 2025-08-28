@@ -16,10 +16,15 @@ namespace Freelando.Dados.Mapeamentos
         {
             entity.ToTable("TB_Candidaturas");
             entity.Property(e => e.Id).HasColumnName("ID_Candidatura");
-            entity.Property(e => e.ValorProposto).HasColumnName("Valor_Proposto").HasColumnType("decimal(10,2)");
+            entity.Property(e => e.ValorProposto).HasColumnName("Valor_Proposto");
             entity.Property(e => e.DescricaoProposta).HasColumnName("DS_Proposta").HasColumnType("nvarchar(500)");
             entity.Property(e => e.DuracaoProposta).HasColumnName("Duracao_Proposta").HasConversion(new EnumToStringConverter<DuracaoEmDias>());
             entity.Property(e => e.Status).HasConversion(new EnumToStringConverter<StatusCandidatura>());
+
+            entity.Property(e => e.ServicoId).HasColumnName("ID_Servico");
+            entity.HasOne(e => e.Servico)
+                .WithMany(s => s.Candidaturas)
+                .HasForeignKey(e => e.ServicoId); // usa a propriedade da entidade
         }
     }
 }

@@ -43,6 +43,10 @@ namespace Freelando.Dados.Mapeamentos
                         .WithMany(e => e.ProjetosEspecialidade)
                         .HasForeignKey(e => e.ProjetoId)
                     );
+
+            entity
+                .HasOne(e => e.Servico)
+                .WithOne(p => p.Projeto);
             //configuração alternativa para muitos para muitos sem a entidade de junção
             //entity
             //    .HasMany(p => p.Especialidades)

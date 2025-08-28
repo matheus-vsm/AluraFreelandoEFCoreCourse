@@ -15,9 +15,10 @@ public class Projeto
     public Cliente? Cliente { get; set; }
     public ICollection<Especialidade> Especialidades { get; set; }
     public ICollection<ProjetoEspecialidade> ProjetosEspecialidade { get; } = [];
+    public Servico Servico { get; set; }
 
     public Projeto() { }
-    public Projeto(Guid id, string? titulo, string? descricao, StatusProjeto status, Cliente cliente, ICollection<Especialidade> especialidades)
+    public Projeto(Guid id, string? titulo, string? descricao, StatusProjeto status, Cliente cliente, ICollection<Especialidade> especialidades, Servico servico)
     {
         Id = id;
         Titulo = titulo;
@@ -25,5 +26,6 @@ public class Projeto
         Status = status;
         Cliente = cliente;
         Especialidades = especialidades;
+        Servico = servico;
     }
 }
