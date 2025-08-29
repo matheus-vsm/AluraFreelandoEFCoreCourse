@@ -20,6 +20,7 @@ namespace Freelando.Dados
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<ProjetoEspecialidade> ProjetosEspecialidades { get; set; }
+        public DbSet<ProfissionalEspecialidade> ProfissionalEspecialidades { get; set; }
 
         private readonly IConfiguration _configuration;
         public FreelandoContext(DbContextOptions<FreelandoContext> options) : base(options) { }
