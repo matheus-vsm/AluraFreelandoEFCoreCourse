@@ -1,4 +1,5 @@
 ﻿using Freelando.Api.Converters;
+using Freelando.Api.Requests;
 using Freelando.Dados;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,5 +22,14 @@ public static class CandidaturaExtension
         }).WithTags("Candidatura").WithOpenApi();
         // .WithTags("Candidatura") → organiza endpoints por categoria no Swagger.
         // .WithOpenApi() → expõe a rota corretamente na documentação OpenAPI / Swagger.
+
+        app.MapPost("/candidatura", async ([FromServices] CandidaturaConverter converter, [FromServices] FreelandoContext contexto, CandidaturaRequest candidaturaRequest) =>
+        {
+            var candidatura = converter.RequestToEntity(candidaturaRequest);
+            await contexto.Candidaturas.AddAsync(candidatura);
+            await contexto.SaveChangesAsync();
+
+            return Results.Created($"/candidatura/{candidatura.Id}", candidatura);
+        }).WithTags("Candidatura").WithOpenApi();
     }
 }
