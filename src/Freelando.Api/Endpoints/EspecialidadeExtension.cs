@@ -1,4 +1,5 @@
 ﻿using Freelando.Api.Converters;
+using Freelando.Api.Requests;
 using Freelando.Dados;
 using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,18 @@ public static class EspecialidadeExtension
         app.MapGet("/especialidades", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto) =>
         {
             var especialidades = converter.EntityListToResponseList(contexto.Especialidades.ToList());
+
             return Results.Ok(await Task.FromResult(especialidades));
+        }).WithTags("Especialidade").WithOpenApi();
+
+        app.MapPost("/especialidade", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, EspecialidadeRequest especialidadeRequest) =>
+        {
+            var especialidade = converter.RequestToEntity(especialidadeRequest);
+            await contexto.Especialidades.AddAsync(especialidade);
+            await contexto.SaveChangesAsync();
+
+            return Results.Created($"/especialidade/{especialidade.Id}", especialidade);
+            //O Created é usado quando você cria um novo recurso em uma API. Ele deixa explícito para o cliente “foi criado”, “aqui está o recurso” e “este é o endereço dele”.
         }).WithTags("Especialidade").WithOpenApi();
     }
 }
