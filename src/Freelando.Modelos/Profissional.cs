@@ -15,9 +15,10 @@ public class Profissional
     public string? Telefone { get; set; }
     public ICollection<Especialidade> Especialidades { get; set; }
     public ICollection<ProfissionalEspecialidade> ProfissionaisEspecialidades { get; } = [];
+    public ICollection<Contrato> Contratos { get; set; }
 
     public Profissional() { }
-    public Profissional(Guid id, string? nome, string? cpf, string? email, string? telefone, ICollection<Especialidade> especialidades)
+    public Profissional(Guid id, string? nome, string? cpf, string? email, string? telefone, ICollection<Especialidade> especialidades, ICollection<Contrato> contratos)
     {
         Id = id;
         Nome = nome;
@@ -25,5 +26,6 @@ public class Profissional
         Email = email;
         Telefone = telefone;
         Especialidades = especialidades;
+        Contratos = contratos;
     }
 }
