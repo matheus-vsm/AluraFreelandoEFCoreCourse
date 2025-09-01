@@ -5,6 +5,7 @@ using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Contracts;
+using System.Transactions;
 namespace Freelando.Api.Endpoints;
 
 public static class EspecialidadeExtension
@@ -54,13 +55,25 @@ public static class EspecialidadeExtension
         //}).WithTags("Especialidade").WithOpenApi();
         app.MapDelete("/especialidade/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
         {
-            var especialidade = await contexto.Especialidades.FindAsync(id);
-            if (especialidade is null) return Results.NotFound();
+            using (var transaction = contexto.Database.BeginTransaction())
+            {
+                try
+                {
+                    var especialidade = await contexto.Especialidades.FindAsync(id);
+                    if (especialidade is null) return Results.NotFound();
 
-            contexto.Especialidades.Remove(especialidade);
-            await contexto.SaveChangesAsync();
+                    contexto.Especialidades.Remove(especialidade);
+                    await contexto.SaveChangesAsync();
+                    transaction.Commit();
 
-            return Results.NoContent();
+                    return Results.NoContent();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }            
         }).WithTags("Especialidade").WithOpenApi();
     }
 }
