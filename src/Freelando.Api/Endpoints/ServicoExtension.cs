@@ -39,5 +39,16 @@ public static class ServicoExtensions
 
             return Results.Ok(servico);
         }).WithTags("Servicos").WithOpenApi();
+
+        app.MapDelete("/servico/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        {
+            var servico = await contexto.Servicos.FindAsync(id);
+            if (servico is null) return Results.NotFound();
+
+            contexto.Servicos.Remove(servico);
+            await contexto.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).WithTags("Servicos").WithOpenApi();
     }
 }

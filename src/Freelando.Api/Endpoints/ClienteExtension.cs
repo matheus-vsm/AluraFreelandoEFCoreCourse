@@ -41,5 +41,16 @@ public static class ClienteExtension
 
             return Results.Ok(cliente);
         }).WithTags("Cliente").WithOpenApi();
+
+        app.MapDelete("/cliente/{id}", async ([FromServices] CandidaturaConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        {
+            var cliente = await contexto.Clientes.FindAsync(id);
+            if (cliente is null) return Results.NotFound();
+
+            contexto.Clientes.Remove(cliente);
+            await contexto.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).WithTags("Cliente").WithOpenApi();
     }
 }

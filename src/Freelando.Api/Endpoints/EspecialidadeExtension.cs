@@ -40,5 +40,27 @@ public static class EspecialidadeExtension
 
             return Results.Ok(especialidade);
         }).WithTags("Especialidade").WithOpenApi();
+
+        //app.MapDelete("/especialidade/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        //{
+        //    var especialidade = await contexto.Especialidades.FindAsync(id);
+        //    if (especialidade is null) return Results.NotFound();
+
+        //    contexto.Especialidades.Remove(especialidade);
+        //    await contexto.SaveChangesAsync();
+
+        //    return Results.NoContent();
+        //    //Retorna um 204 No Content, que é o código HTTP padrão quando algo foi excluído com sucesso e não tem nada para retornar no corpo da resposta.
+        //}).WithTags("Especialidade").WithOpenApi();
+        app.MapDelete("/especialidade/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        {
+            var especialidade = await contexto.Especialidades.FindAsync(id);
+            if (especialidade is null) return Results.NotFound();
+
+            contexto.Especialidades.Remove(especialidade);
+            await contexto.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).WithTags("Especialidade").WithOpenApi();
     }
 }
