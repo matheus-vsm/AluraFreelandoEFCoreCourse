@@ -38,7 +38,7 @@ public static class EspecialidadeExtension
             especialidade.Projetos = especialidadeAtualizada.Projetos;
             await contexto.SaveChangesAsync();
 
-            return Results.Ok(await Task.FromResult(especialidade));
+            return Results.Ok(especialidade);
         }).WithTags("Especialidade").WithOpenApi();
     }
 }

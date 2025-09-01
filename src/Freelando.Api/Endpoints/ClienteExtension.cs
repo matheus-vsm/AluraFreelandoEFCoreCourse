@@ -1,6 +1,7 @@
 ﻿using Freelando.Api.Converters;
 using Freelando.Api.Requests;
 using Freelando.Dados;
+using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,21 @@ public static class ClienteExtension
             await contexto.SaveChangesAsync();
 
             return Results.Created($"/cliente/{cliente.Id}", cliente);
+        }).WithTags("Cliente").WithOpenApi();
+
+        app.MapPut("/cliente{id}", async ([FromServices] ClienteConverter converter, [FromServices] FreelandoContext contexto, ClienteRequest clienteRequest, Guid id) =>
+        {
+            var cliente = await contexto.Clientes.FindAsync(id);
+            if (cliente is null) return Results.NotFound();
+            var clienteAtualizado = converter.RequestToEntity(clienteRequest);
+
+            cliente.Nome = clienteAtualizado.Nome;
+            cliente.Cpf = clienteAtualizado.Cpf;
+            cliente.Email = clienteAtualizado.Email;
+            cliente.Telefone = clienteAtualizado.Telefone;
+            await contexto.SaveChangesAsync();
+
+            return Results.Ok(cliente);
         }).WithTags("Cliente").WithOpenApi();
     }
 }

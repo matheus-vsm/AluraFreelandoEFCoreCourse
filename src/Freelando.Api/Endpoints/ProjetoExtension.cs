@@ -23,5 +23,19 @@ public static class ProjetoExtension
 
             return Results.Created($"/projeto/{projeto.Id}", projeto);
         }).WithTags("Projeto").WithOpenApi();
+
+        app.MapPut("/projeto/{id}", async ([FromServices] ProjetoConverter converter, [FromServices] FreelandoContext contexto, ProjetoRequest projetoRequest, Guid id) =>
+        {
+            var projeto = await contexto.Projetos.FindAsync(id);
+            if (projeto is null) return Results.NotFound();
+
+            var projetoAtualizado = converter.RequestToEntity(projetoRequest);
+            projeto.Titulo = projetoAtualizado.Titulo;
+            projeto.Descricao = projetoAtualizado.Descricao;
+            projeto.Status = projetoAtualizado.Status;
+            await contexto.SaveChangesAsync();
+
+            return Results.Ok(projeto);
+        }).WithTags("Projeto").WithOpenApi();
     }
 }

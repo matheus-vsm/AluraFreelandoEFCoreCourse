@@ -25,5 +25,18 @@ public static class ContratoExtension
 
             return Results.Created($"/contrato/{contrato.Id}", contrato);
         }).WithTags("Contrato").WithOpenApi();
+
+        app.MapPut("/contrato{id}", async ([FromServices] ContratoConverter converter, [FromServices] FreelandoContext contexto, ContratoRequest contratoRequest, Guid id) =>
+        {
+            var contrato = await contexto.Contratos.FindAsync(id);
+            if (contrato is null) return Results.NotFound();
+
+            var contratoAtualizado = converter.RequestToEntity(contratoRequest);
+            contrato.Valor = contratoAtualizado.Valor;
+            contrato.Vigencia = contratoAtualizado.Vigencia;
+            await contexto.SaveChangesAsync();
+
+            return Results.Ok(contrato);
+        }).WithTags("Contrato").WithOpenApi();
     }
 }
