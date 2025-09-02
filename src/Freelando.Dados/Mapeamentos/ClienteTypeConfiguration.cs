@@ -16,6 +16,7 @@ namespace Freelando.Dados.Mapeamentos
             entity.ToTable("TB_Clientes");
             entity.Property(e => e.Id)
                 .HasColumnName("ID_Cliente");
+            entity.HasIndex(e => e.Email).IsUnique();
         }
     }
 }

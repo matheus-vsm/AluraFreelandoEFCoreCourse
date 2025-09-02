@@ -4,6 +4,7 @@ using Freelando.Dados;
 using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Freelando.Api.Endpoints;
 
@@ -18,20 +19,27 @@ public static class ClienteExtension
             return Results.Ok(await Task.FromResult(clientes));
         }).WithTags("Cliente").WithOpenApi();
 
-        app.MapGet("/clientes/identificador-nome", async ([FromServices] ClienteConverter converter, [FromServices] FreelandoContext contexto) =>
+        app.MapGet("/clientes/identificador-nome", async ([FromServices] FreelandoContext contexto) =>
         {
             var clientes = contexto.Clientes.Select(c => new { Identificador = c.Id, Nome = c.Nome }).ToList();
 
             return Results.Ok(await Task.FromResult(clientes));
         }).WithTags("Cliente").WithOpenApi();
 
-        app.MapGet("/clientes/projeto-especialidade", async ([FromServices] ClienteConverter converter, [FromServices] FreelandoContext contexto) =>
+        app.MapGet("/clientes/projeto-especialidade", async ([FromServices] FreelandoContext contexto) =>
         {
             var clientes = contexto.Clientes
                 .Include(x => x.Projetos) // Inclui os projetos de cada cliente
                 .ThenInclude(p => p.Especialidades) // Inclui as especialidades de cada projeto
                 .AsSplitQuery() // Usa consultas separadas para melhorar o desempenho
                 .ToList();
+
+            return Results.Ok(await Task.FromResult(clientes));
+        }).WithTags("Cliente").WithOpenApi();
+
+        app.MapGet("/clientes/por-email", async ([FromServices] FreelandoContext contexto, string email) =>
+        {
+            var clientes = contexto.Clientes.Where(e => e.Email.Equals(email)).ToList();
 
             return Results.Ok(await Task.FromResult(clientes));
         }).WithTags("Cliente").WithOpenApi();
