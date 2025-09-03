@@ -41,7 +41,7 @@ public static class ProfissionalExtension
             return Results.Ok(profissional);
         }).WithTags("Profissional").WithOpenApi();
 
-        app.MapDelete("/profissional/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/profissional/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             var profissional = await contexto.Profissionais.FindAsync(id);
             if (profissional is null) return Results.NotFound();

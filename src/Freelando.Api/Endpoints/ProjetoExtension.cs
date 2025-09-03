@@ -45,7 +45,7 @@ public static class ProjetoExtension
             return Results.Ok(projeto);
         }).WithTags("Projeto").WithOpenApi();
 
-        app.MapDelete("/projeto/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/projeto/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             var projeto = await contexto.Projetos.FindAsync(id);
             if (projeto is null) return Results.NotFound();

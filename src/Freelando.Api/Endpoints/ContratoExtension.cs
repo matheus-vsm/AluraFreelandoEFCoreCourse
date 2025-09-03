@@ -19,11 +19,26 @@ public static class ContratoExtension
 
         app.MapPost("/contrato", async ([FromServices] ContratoConverter converter, [FromServices] FreelandoContext contexto, ContratoRequest contratoRequest) =>
         {
-            var contrato = converter.RequestToEntity(contratoRequest);
-            await contexto.Contratos.AddAsync(contrato);
-            await contexto.SaveChangesAsync();
+            using var transaction = await contexto.Database.BeginTransactionAsync();
+            try
+            {
+                //ponto de salvamento ou CheckPoint
+                transaction.CreateSavepoint("Savepoint");
 
-            return Results.Created($"/contrato/{contrato.Id}", contrato);
+                var contrato = converter.RequestToEntity(contratoRequest);
+                await contexto.Contratos.AddAsync(contrato);
+                await contexto.SaveChangesAsync(); 
+                
+                await transaction.CommitAsync();
+
+                return Results.Created($"/contrato/{contrato.Id}", contrato);
+            }
+            catch (Exception e)
+            {
+                //caso de algum problema na transação, ele retorna para o CheckPoint criado
+                transaction.RollbackToSavepoint("Savepoint");
+                return Results.BadRequest(e.Message);
+            }
         }).WithTags("Contrato").WithOpenApi();
 
         app.MapPut("/contrato{id}", async ([FromServices] ContratoConverter converter, [FromServices] FreelandoContext contexto, ContratoRequest contratoRequest, Guid id) =>
@@ -39,7 +54,7 @@ public static class ContratoExtension
             return Results.Ok(contrato);
         }).WithTags("Contrato").WithOpenApi();
 
-        app.MapDelete("/contrato/{id}", async ([FromServices] CandidaturaConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/contrato/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             var contrato = await contexto.Contratos.FindAsync(id);
             if (contrato is null) return Results.NotFound();

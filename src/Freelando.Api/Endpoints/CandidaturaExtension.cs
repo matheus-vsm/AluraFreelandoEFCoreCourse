@@ -48,7 +48,7 @@ public static class CandidaturaExtension
             return Results.Ok(candidatura);
         }).WithTags("Candidatura").WithOpenApi();
 
-        app.MapDelete("/candidatura/{id}", async ([FromServices] CandidaturaConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/candidatura/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             var candidatura = await contexto.Candidaturas.FindAsync(id);
             if (candidatura is null) return Results.NotFound();

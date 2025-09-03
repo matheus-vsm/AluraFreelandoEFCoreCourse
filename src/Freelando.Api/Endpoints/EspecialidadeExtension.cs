@@ -20,7 +20,7 @@ public static class EspecialidadeExtension
             return Results.Ok(await Task.FromResult(especialidades));
         }).WithTags("Especialidade").WithOpenApi();
 
-        app.MapGet("/especialidades/{letraInicial}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, string letraInicial) =>
+        app.MapGet("/especialidades/{letraInicial}", async ([FromServices] FreelandoContext contexto, string letraInicial) =>
         {
             //variável que pode guardar uma expressão lambda de filtro para Especialidade.
             Expression<Func<Especialidade, bool>> filtroExpression = null;
@@ -77,7 +77,7 @@ public static class EspecialidadeExtension
         //    return Results.NoContent();
         //    //Retorna um 204 No Content, que é o código HTTP padrão quando algo foi excluído com sucesso e não tem nada para retornar no corpo da resposta.
         //}).WithTags("Especialidade").WithOpenApi();
-        app.MapDelete("/especialidade/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/especialidade/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             using (var transaction = contexto.Database.BeginTransaction())
             {
