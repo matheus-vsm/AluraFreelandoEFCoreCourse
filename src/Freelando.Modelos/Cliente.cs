@@ -1,4 +1,6 @@
-﻿namespace Freelando.Modelo;
+﻿using Freelando.Modelos;
+
+namespace Freelando.Modelo;
 public class Cliente
 {
     public Guid Id { get; set; }
@@ -7,6 +9,7 @@ public class Cliente
     public string? Email { get; set; }
     public string? Telefone { get; set; }
     public ICollection<Projeto> Projetos { get; set; }
+    public Endereco Endereco { get; set; }
 
     public Cliente() { }
     public Cliente(Guid id, string? nome, string? cpf, string? email, string? telefone, ICollection<Projeto> projetos)
