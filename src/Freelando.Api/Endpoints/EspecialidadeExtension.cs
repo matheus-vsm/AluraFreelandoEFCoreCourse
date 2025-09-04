@@ -1,6 +1,7 @@
 ﻿using Freelando.Api.Converters;
 using Freelando.Api.Requests;
 using Freelando.Dados;
+using Freelando.Dados.Repository;
 using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ public static class EspecialidadeExtension
 {
     public static void AddEndPointEspecialidade(this WebApplication app)
     {
-        app.MapGet("/especialidades", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto) =>
+        app.MapGet("/especialidades", async ([FromServices] EspecialidadeConverter converter, [FromServices] IEspecialidadeRepository repository) =>
         {
-            var especialidades = converter.EntityListToResponseList(contexto.Especialidades.ToList());
+            var especialidades = converter.EntityListToResponseList(await repository.BuscarTodos());
 
             return Results.Ok(await Task.FromResult(especialidades));
         }).WithTags("Especialidade").WithOpenApi();
@@ -35,7 +36,7 @@ public static class EspecialidadeExtension
             return await especialidades.ToListAsync();
         }).WithTags("Especialidade").WithOpenApi();
 
-        app.MapPost("/especialidade", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, EspecialidadeRequest especialidadeRequest) =>
+        app.MapPost("/especialidade", async ([FromServices] EspecialidadeConverter converter, [FromServices] IEspecialidadeRepository repository, EspecialidadeRequest especialidadeRequest) =>
         {
             var especialidade = converter.RequestToEntity(especialidadeRequest);
 
@@ -46,8 +47,7 @@ public static class EspecialidadeExtension
 
             if (!validarDescricao(especialidade)) return Results.BadRequest("A Descrição não pode estar em Branco e deve começar com Letra Maiúscula!");
 
-            await contexto.Especialidades.AddAsync(especialidade);
-            await contexto.SaveChangesAsync();
+            await repository.Adicionar(especialidade);
 
             return Results.Created($"/especialidade/{especialidade.Id}", especialidade);
             //O Created é usado quando você cria um novo recurso em uma API. Ele deixa explícito para o cliente “foi criado”, “aqui está o recurso” e “este é o endereço dele”.
