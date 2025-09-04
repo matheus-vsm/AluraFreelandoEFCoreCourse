@@ -27,11 +27,15 @@ public static class ContratoExtension
 
                 var contrato = converter.RequestToEntity(contratoRequest);
                 await contexto.Contratos.AddAsync(contrato);
-                await contexto.SaveChangesAsync(); 
-                
+                await contexto.SaveChangesAsync();
+
                 await transaction.CommitAsync();
 
                 return Results.Created($"/contrato/{contrato.Id}", contrato);
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return Results.BadRequest($"Problemas de Simultaneidade {e.Message}.");
             }
             catch (Exception e)
             {
