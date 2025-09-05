@@ -1,26 +1,26 @@
 ﻿using Freelando.Api.Converters;
 using Freelando.Api.Requests;
 using Freelando.Dados;
+using Freelando.Dados.Repository.Interfaces;
+using Freelando.Dados.UnitOfWork;
 using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
-using System.Transactions;
 namespace Freelando.Api.Endpoints;
 
 public static class EspecialidadeExtension
 {
     public static void AddEndPointEspecialidade(this WebApplication app)
     {
-        app.MapGet("/especialidades", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto) =>
+        app.MapGet("/especialidades", async ([FromServices] EspecialidadeConverter converter, [FromServices] IEspecialidadeRepository repository) =>
         {
-            var especialidades = converter.EntityListToResponseList(contexto.Especialidades.ToList());
+            var especialidades = converter.EntityListToResponseList(await repository.BuscarTodos());
 
             return Results.Ok(await Task.FromResult(especialidades));
         }).WithTags("Especialidade").WithOpenApi();
 
-        app.MapGet("/especialidades/{letraInicial}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, string letraInicial) =>
+        app.MapGet("/especialidades/{letraInicial}", async ([FromServices] FreelandoContext contexto, string letraInicial) =>
         {
             //variável que pode guardar uma expressão lambda de filtro para Especialidade.
             Expression<Func<Especialidade, bool>> filtroExpression = null;
@@ -35,7 +35,7 @@ public static class EspecialidadeExtension
             return await especialidades.ToListAsync();
         }).WithTags("Especialidade").WithOpenApi();
 
-        app.MapPost("/especialidade", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, EspecialidadeRequest especialidadeRequest) =>
+        app.MapPost("/especialidade", async ([FromServices] EspecialidadeConverter converter, [FromServices] IUnitOfWork unityOfWork, EspecialidadeRequest especialidadeRequest) =>
         {
             var especialidade = converter.RequestToEntity(especialidadeRequest);
 
@@ -46,8 +46,8 @@ public static class EspecialidadeExtension
 
             if (!validarDescricao(especialidade)) return Results.BadRequest("A Descrição não pode estar em Branco e deve começar com Letra Maiúscula!");
 
-            await contexto.Especialidades.AddAsync(especialidade);
-            await contexto.SaveChangesAsync();
+            await unityOfWork.EspecialidadeRepository.Adicionar(especialidade);
+            await unityOfWork.Commit();
 
             return Results.Created($"/especialidade/{especialidade.Id}", especialidade);
             //O Created é usado quando você cria um novo recurso em uma API. Ele deixa explícito para o cliente “foi criado”, “aqui está o recurso” e “este é o endereço dele”.
@@ -77,7 +77,7 @@ public static class EspecialidadeExtension
         //    return Results.NoContent();
         //    //Retorna um 204 No Content, que é o código HTTP padrão quando algo foi excluído com sucesso e não tem nada para retornar no corpo da resposta.
         //}).WithTags("Especialidade").WithOpenApi();
-        app.MapDelete("/especialidade/{id}", async ([FromServices] EspecialidadeConverter converter, [FromServices] FreelandoContext contexto, Guid id) =>
+        app.MapDelete("/especialidade/{id}", async ([FromServices] FreelandoContext contexto, Guid id) =>
         {
             using (var transaction = contexto.Database.BeginTransaction())
             {

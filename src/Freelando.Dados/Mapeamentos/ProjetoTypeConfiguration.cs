@@ -2,11 +2,6 @@
 using Freelando.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Freelando.Dados.Mapeamentos
 {
@@ -47,6 +42,14 @@ namespace Freelando.Dados.Mapeamentos
             entity
                 .HasOne(e => e.Servico)
                 .WithOne(p => p.Projeto);
+
+            var dateTimeToDateConverter = new DateTimeToDateConverter();
+            entity.OwnsOne(e => e.Vigencia, vigencia =>
+            {
+                vigencia.Property(v => v.DataInicio).HasColumnName("DataInicio").HasConversion(dateTimeToDateConverter);
+
+                vigencia.Property(v => v.DataEncerramento).HasColumnName("DataEncerramento").HasConversion(dateTimeToDateConverter);
+            });
             //configuração alternativa para muitos para muitos sem a entidade de junção
             //entity
             //    .HasMany(p => p.Especialidades)

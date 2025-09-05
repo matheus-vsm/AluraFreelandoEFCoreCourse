@@ -1,9 +1,4 @@
 ﻿using Freelando.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Freelando.Modelo;
 public class Projeto
@@ -16,6 +11,7 @@ public class Projeto
     public ICollection<Especialidade> Especialidades { get; set; }
     public ICollection<ProjetoEspecialidade> ProjetosEspecialidade { get; } = [];
     public Servico Servico { get; set; }
+    public Vigencia Vigencia { get; set; }
 
     public Projeto() { }
     public Projeto(Guid id, string? titulo, string? descricao, StatusProjeto status, Cliente cliente, ICollection<Especialidade> especialidades, Servico servico)

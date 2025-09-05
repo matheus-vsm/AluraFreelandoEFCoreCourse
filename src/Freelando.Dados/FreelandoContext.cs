@@ -1,12 +1,8 @@
-﻿using Freelando.Modelo;
+﻿using Freelando.Dados.Interceptor;
+using Freelando.Modelo;
 using Freelando.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Freelando.Dados
 {
@@ -31,6 +27,7 @@ namespace Freelando.Dados
             {
                 optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnectionStrings:DefaultConnection"));
             }
+            optionsBuilder.AddInterceptors(new CommandInterceptor());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
