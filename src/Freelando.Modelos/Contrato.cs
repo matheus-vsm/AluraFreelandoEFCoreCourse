@@ -1,10 +1,4 @@
-﻿using Freelando.Modelo;
-using Freelando.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Freelando.Modelos;
 
 namespace Freelando.Modelo;
 public class Contrato

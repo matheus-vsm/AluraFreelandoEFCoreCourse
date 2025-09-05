@@ -1,5 +1,4 @@
 ﻿using Freelando.Modelos;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Freelando.Modelo;
 public class Especialidade

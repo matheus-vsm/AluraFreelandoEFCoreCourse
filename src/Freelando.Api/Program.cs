@@ -2,9 +2,11 @@ using Freelando.Api.Converters;
 using Freelando.Api.Endpoints;
 using Freelando.Dados;
 using Freelando.Dados.Repository;
+using Freelando.Dados.Repository.Interfaces;
 using Freelando.Dados.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

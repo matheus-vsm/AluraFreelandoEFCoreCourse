@@ -1,14 +1,12 @@
 ﻿using Freelando.Api.Converters;
 using Freelando.Api.Requests;
 using Freelando.Dados;
-using Freelando.Dados.Repository;
+using Freelando.Dados.Repository.Interfaces;
 using Freelando.Dados.UnitOfWork;
 using Freelando.Modelo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
-using System.Transactions;
 namespace Freelando.Api.Endpoints;
 
 public static class EspecialidadeExtension

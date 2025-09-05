@@ -1,5 +1,4 @@
-﻿using Freelando.Api.Converters;
-using Freelando.Api.Responses;
+﻿using Freelando.Api.Responses;
 using Freelando.Dados;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

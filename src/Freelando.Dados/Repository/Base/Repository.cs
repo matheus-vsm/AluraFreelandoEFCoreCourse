@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Freelando.Dados.Repository;
+namespace Freelando.Dados.Repository.Base;
 
 public class Repository<T> : IRepository<T> where T : class
 {

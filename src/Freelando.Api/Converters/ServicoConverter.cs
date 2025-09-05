@@ -1,5 +1,4 @@
-﻿using Azure.Core.Pipeline;
-using Freelando.Api.Requests;
+﻿using Freelando.Api.Requests;
 using Freelando.Api.Responses;
 using Freelando.Modelo;
 

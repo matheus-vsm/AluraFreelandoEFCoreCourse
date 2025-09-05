@@ -1,5 +1,4 @@
-﻿using Freelando.Api.Responses;
-using Freelando.Modelo;
+﻿using Freelando.Modelo;
 
 namespace Freelando.Api.Requests;
 

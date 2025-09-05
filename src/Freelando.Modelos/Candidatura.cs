@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Freelando.Modelo;
+﻿namespace Freelando.Modelo;
 
 public class Candidatura
 {
